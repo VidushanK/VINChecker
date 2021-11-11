@@ -50,12 +50,25 @@ var resolveModel = function (data) {
     });
     return Promise.all(promises);
 };
+var resolveVin = function (data) {
+    var promises = data['Results'].map(function (vin) {
+        return {
+            Make: vin.Make,
+            Model: vin.Model,
+            ModelYear: vin.ModelYear
+        };
+    });
+    return Promise.all(promises);
+};
 var resolvers = {
     MakeResults: {
         results: resolveMake
     },
     ModelResults: {
         results: resolveModel
+    },
+    VinResults: {
+        results: resolveVin
     },
     Query: {
         OutputMake: function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -86,12 +99,14 @@ var resolvers = {
         OutputVin: function (_, _a) {
             var vin = _a.vin;
             return __awaiter(void 0, void 0, void 0, function () {
+                var response;
                 return __generator(this, function (_b) {
-                    return [2, {
-                            Make: 'SUBARU',
-                            Model: 'BRZ',
-                            ModelYear: '2018'
-                        }];
+                    switch (_b.label) {
+                        case 0: return [4, fetch("https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/" + vin + "?format=json")];
+                        case 1:
+                            response = _b.sent();
+                            return [2, response.json()];
+                    }
                 });
             });
         }

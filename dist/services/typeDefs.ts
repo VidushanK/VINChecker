@@ -4,19 +4,23 @@ export const typeDefs = gql`
   type Query {
     OutputMake: MakeResults
     OutputModel(make: String!): ModelResults
-    OutputVin(vin: String!): Vin
+    OutputVin(vin: String!): VinResults
   }
 
   type MakeResults {
-	results: [Make]
+	  results: [Make]
   }
 
   type ModelResults{
 	  results: [Model]
   }
 
+  type VinResults {
+	  results: [Vin]
+  }
+
   type Make {
-	Make_Name: String
+	  Make_Name: String
   }
 
   type Model {

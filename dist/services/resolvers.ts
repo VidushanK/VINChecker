@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 
 const resolveMake = (data: { [x: string]: any[]; }) => {
-	const promises = data['Results'].map((make: { Make_Name: any; }) => {
+	const promises = data['Results'].map((make: { Make_Name: string; }) => {
 		return { Make_Name: make.Make_Name }
 	});
 
@@ -9,10 +9,22 @@ const resolveMake = (data: { [x: string]: any[]; }) => {
 };
 
 const resolveModel = (data: { [x: string]: any[]; }) => {
-	const promises = data['Results'].map((model: { Make_Name: string; Model_Name: any; }) => {
+	const promises = data['Results'].map((model: { Make_Name: string; Model_Name: string; }) => {
 		return {
 			Make_Name: model.Make_Name,
 			Model_Name: model.Model_Name
+		}
+	});
+
+	return Promise.all(promises);
+};
+
+const resolveVin = (data: { [x: string]: any[]; }) => {
+	const promises = data['Results'].map((vin: { Make: string; Model: string; ModelYear: string; }) => {
+		return {
+			Make: vin.Make,
+			Model: vin.Model,
+			ModelYear: vin.ModelYear
 		}
 	});
 
@@ -25,6 +37,9 @@ const resolvers = {
 	},
 	ModelResults: {
 		results: resolveModel
+	},
+	VinResults: {
+		results: resolveVin
 	},
 	Query: {
 		OutputMake: async () => {
@@ -39,11 +54,8 @@ const resolvers = {
 
 		},
 		OutputVin: async (_: any, { vin }: any) => {
-			return {
-				Make: 'SUBARU',
-				Model: 'BRZ',
-				ModelYear: '2018' 
-			};
+			const response = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${vin}?format=json`)
+			return response.json()
 		}
 	}
 };
