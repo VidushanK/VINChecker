@@ -36,8 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
-import { typeDefs } from './typeDefs';
-import resolvers from './resolvers';
+import { typeDefs } from './services/typeDefs';
+import resolvers from './services/resolvers';
 var startServer = function () { return __awaiter(void 0, void 0, void 0, function () {
     var PORT, app, server;
     return __generator(this, function (_a) {

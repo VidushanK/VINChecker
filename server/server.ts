@@ -1,7 +1,7 @@
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
-import { typeDefs } from './typeDefs';
-import resolvers from './resolvers';
+import { typeDefs } from './services/typeDefs';
+import resolvers from './services/resolvers';
 
 const startServer = async () => {
 	const PORT = process.env.PORT || 4000;
