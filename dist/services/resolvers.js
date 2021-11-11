@@ -41,9 +41,21 @@ var resolveMake = function (data) {
     });
     return Promise.all(promises);
 };
+var resolveModel = function (data) {
+    var promises = data['Results'].map(function (model) {
+        return {
+            Make_Name: model.Make_Name,
+            Model_Name: model.Model_Name
+        };
+    });
+    return Promise.all(promises);
+};
 var resolvers = {
     MakeResults: {
         results: resolveMake
+    },
+    ModelResults: {
+        results: resolveModel
     },
     Query: {
         OutputMake: function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -60,11 +72,14 @@ var resolvers = {
         OutputModel: function (_, _a) {
             var make = _a.make;
             return __awaiter(void 0, void 0, void 0, function () {
+                var response;
                 return __generator(this, function (_b) {
-                    return [2, {
-                            Make_Name: make,
-                            Model_Name: 'BRZ'
-                        }];
+                    switch (_b.label) {
+                        case 0: return [4, fetch("https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformake/" + make + "?format=json")];
+                        case 1:
+                            response = _b.sent();
+                            return [2, response.json()];
+                    }
                 });
             });
         },
