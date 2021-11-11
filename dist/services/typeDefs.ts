@@ -2,11 +2,15 @@ import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
   type Query {
-    OutputMake: Make
+    OutputMake: MakeResults
     OutputModel(make: String!): Model
     OutputVin(vin: String!): Vin
   }
 
+  type MakeResults {
+	results: [Make]
+  }
+  
   type Make {
 	Make_Name: String
   }

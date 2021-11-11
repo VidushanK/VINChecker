@@ -1,9 +1,21 @@
+import fetch from "node-fetch";
+
+const resolveMake = (data: { [x: string]: any[]; }) => {
+	const promises = data['Results'].map((make: { Make_Name: any; }) => {
+		return { Make_Name: make.Make_Name }
+	});
+
+	return Promise.all(promises);
+};
+
 const resolvers = {
+	MakeResults: {
+		results: resolveMake
+	},
 	Query: {
 		OutputMake: async () => {
-			return {
-				Make_Name: 'SUBARU'
-			}
+			const response = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json`);
+			return response.json()
 		},
 		OutputModel: async (_: any, { make }: any) => {
 			return {

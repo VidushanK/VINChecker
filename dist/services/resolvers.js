@@ -34,13 +34,27 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+import fetch from "node-fetch";
+var resolveMake = function (data) {
+    var promises = data['Results'].map(function (make) {
+        return { Make_Name: make.Make_Name };
+    });
+    return Promise.all(promises);
+};
 var resolvers = {
+    MakeResults: {
+        results: resolveMake
+    },
     Query: {
         OutputMake: function () { return __awaiter(void 0, void 0, void 0, function () {
+            var response;
             return __generator(this, function (_a) {
-                return [2, {
-                        Make_Name: 'SUBARU'
-                    }];
+                switch (_a.label) {
+                    case 0: return [4, fetch("https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json")];
+                    case 1:
+                        response = _a.sent();
+                        return [2, response.json()];
+                }
             });
         }); },
         OutputModel: function (_, _a) {
